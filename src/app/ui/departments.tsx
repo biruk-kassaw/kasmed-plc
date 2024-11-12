@@ -3,7 +3,6 @@ import { useState } from "react";
 import Image from 'next/image';
 import Link from "next/link";
 import machines from "../utils/data"
-import machineImg from "../public/hero.jpg"
 export default function Departments() {
     const [showModal, setShowModal] = useState(false);
 

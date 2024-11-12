@@ -21,16 +21,16 @@ export default function Header() {
       ];
 
       let currentSection = "";
-      for (const section of sections) {
-        const element = document.getElementById(section.id);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top < window.innerHeight / 2 && rect.bottom >= 0) {
-            currentSection = section.href;
-            break;
-          }
-        }
-      }
+      // for (const section of sections) {
+      //   const element = document.getElementById(section.id);
+      //   if (element) {
+      //     const rect = element.getBoundingClientRect();
+      //     if (rect.top < window.innerHeight / 2 && rect.bottom >= 0) {
+      //       currentSection = section.href;
+      //       break;
+      //     }
+      //   }
+      // }
       setActiveHash(currentSection);
     };
 

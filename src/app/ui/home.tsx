@@ -1,11 +1,5 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 'use client'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import '../public/static/css/vendor/bootstrap-icons/bootstrap-icons.css';
-import '../public/static/css/vendor/fontawesome-free/css/all.min.css';
-import '../public/static/css/vendor/glightbox/css/glightbox.min.css';
-import '../public/static/css/vendor/swiper/swiper-bundle.min.css';
-import '../public/static/css/main.css';
 import Hero from "../ui/hero";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -22,6 +16,13 @@ import PartnersCarousel from './partners';
 export default function Home() {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
+      require("bootstrap/dist/js/bootstrap.bundle.min.js");
+      require("bootstrap/dist/css/bootstrap.min.css");
+      require("../public/static/css/main.css");
+      require('../public/static/css/vendor/bootstrap-icons/bootstrap-icons.css');
+      require('../public/static/css/vendor/fontawesome-free/css/all.min.css');
+      require('../public/static/css/vendor/glightbox/css/glightbox.min.css');
+      require('../public/static/css/vendor/swiper/swiper-bundle.min.css');
       AOS.init({
         duration: 600,
         easing: 'ease-in-out',

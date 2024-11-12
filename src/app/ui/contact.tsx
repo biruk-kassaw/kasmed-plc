@@ -1,6 +1,5 @@
 'use-client';
-import { useState } from "react";
-import axios from "axios";
+import { ChangeEventHandler, useState } from "react";
 import emailjs from "emailjs-com";
 
 export default function Contact() {
@@ -15,9 +14,9 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // const { name, value } = e.target;
+    // setFormData((prevData) => ({ ...prevData, [name]: value }));
     validateForm();
   };
 
@@ -27,25 +26,26 @@ export default function Contact() {
       formData.email.trim() &&
       formData.subject.trim() &&
       formData.message.trim();
-    setIsFormValid(isValid);
+    
+    setIsFormValid(isValid ? true: false);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isFormValid) return;
     setIsSubmitting(true);
-    // try {
-    const form = document.getElementById("form") as HTMLFormElement;
-        emailjs.init('gnbvlXsfVM2WV9fHF')
-        emailjs.sendForm("service_s0wtt7h","template_2ycj25l", form).then((response) => {
-            console.log("Email sent successfully!", response.status, response.text);
-            alert("Your message has been sent. Thank you!");
-          })
-          .catch((err) => {
-            console.error("Error sending email:", err);
-            alert("There was an error sending your message. Please try again later.");
-          });
-      setMessage("Your message has been sent. Thank you!");
+    // // try {
+    // const form = document.getElementById("form") as HTMLFormElement;
+    //     emailjs.init('gnbvlXsfVM2WV9fHF')
+    //     emailjs.sendForm("service_s0wtt7h","template_2ycj25l", form).then((response) => {
+    //         console.log("Email sent successfully!", response.status, response.text);
+    //         alert("Your message has been sent. Thank you!");
+    //       })
+    //       .catch((err) => {
+    //         console.error("Error sending email:", err);
+    //         alert("There was an error sending your message. Please try again later.");
+    //       });
+    //   setMessage("Your message has been sent. Thank you!");
     // } catch (error) {
     //     console.log("error", formData)
     //   setMessage("There was an error sending your message. Please try again.");
@@ -141,7 +141,7 @@ export default function Contact() {
                     rows={6}
                     placeholder="Message"
                     value={formData.message}
-                    onChange={handleInputChange}
+                    // onChange={handleInputChange}
                     required
                   />
                 </div>
