@@ -3,7 +3,64 @@ import { useState } from "react";
 import Image from 'next/image';
 import Link from "next/link";
 import machines from "../utils/data"
+import emailjs from "emailjs-com";
+
 export default function Departments() {
+
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    
+      const [isFormValid, setIsFormValid] = useState(false);
+      const [isSubmitting, setIsSubmitting] = useState(false);
+      const [message, setMessage] = useState("");
+    
+      const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+        validateForm();
+      };
+    
+      const validateForm = () => {
+        const isValid =
+          formData.name.trim() &&
+          formData.email.trim() &&
+          formData.subject.trim() &&
+          formData.message.trim();
+        
+        setIsFormValid(isValid ? true: false);
+      };
+    
+      const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!isFormValid) return;
+        setIsSubmitting(true);
+        try {
+          const form = document.getElementById("form") as HTMLFormElement;
+          emailjs.init('PkltkyiZua82kAfKA')
+    
+          emailjs.sendForm("service_86wbd8e","template_xtwc4ab", form).then((response) => {
+              setIsSubmitting(false);
+              setMessage("We have received your message. Thank you!");
+              setFormData({
+                name: "",
+                email: "",
+                subject: "",
+                message: "",
+              })
+            })
+            .catch((err) => {
+              setIsSubmitting(false);
+              alert("There was an error sending your message. Please check your internet connection and try again later.");
+            });
+        } catch (error) {
+          alert("There was an error sending your message. Please check your internet connection and try again later.");
+        }
+      };
+
     const [showModal, setShowModal] = useState(false);
 
     const handleShow = () => setShowModal(true);
@@ -89,9 +146,9 @@ export default function Departments() {
 
                     <div className="col-lg-8">
                         <form
-                        action="forms/contact.php"
-                        method="post"
-                        className="php-email-form"
+                            id="form"
+                            onSubmit={handleSubmit}
+                            className="php-email-form"
                         >
                         <div className="row gy-4">
                             <div className="col-md-6">
@@ -100,22 +157,31 @@ export default function Departments() {
                                 name="name"
                                 className="form-control"
                                 placeholder="Your Name"
+                                value={formData.name}
+                                onChange={handleInputChange}
+                                required
                             />
                             </div>
-                            <div className="col-md-6 ">
+                            <div className="col-md-6">
                             <input
                                 type="email"
-                                className="form-control"
                                 name="email"
+                                className="form-control"
                                 placeholder="Your Email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                required
                             />
                             </div>
                             <div className="col-md-12">
                             <input
                                 type="text"
-                                className="form-control"
                                 name="subject"
+                                className="form-control"
                                 placeholder="Subject"
+                                value={formData.subject}
+                                onChange={handleInputChange}
+                                required
                             />
                             </div>
                             <div className="col-md-12">
@@ -124,20 +190,20 @@ export default function Departments() {
                                 name="message"
                                 rows={6}
                                 placeholder="Message"
-                                defaultValue={""}
+                                value={formData.message}
+                                onChange={handleInputChange}
+                                required
                             />
                             </div>
                             <div className="col-md-12 text-center">
-                            <div className="loading">Loading</div>
-                            <div className="error-message" />
-                            <div className="sent-message">
-                                Your message has been sent. Thank you!
-                            </div>
+                                <>
+                                {message && <div className="sent-message">{message}</div>}
+                                
+                                </>
                             </div>
                         </div>
                         </form>
                     </div>
-                    {/* End Contact Form */}
                     </div>
                 </div>
                 </div>
@@ -145,9 +211,24 @@ export default function Departments() {
                     <button type="button" className="btn btn-danger" onClick={handleClose}>
                     Close
                     </button>
-                    <button type="button" className="btn btn-primary">
-                    Send
-                    </button>
+                    <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                    disabled={!isFormValid || isSubmitting} // Disable during form submission
+                                >
+                                {isSubmitting ? (
+                                    <>
+                                    <span
+                                        className="spinner-border spinner-border-sm me-2"
+                                        role="status"
+                                        aria-hidden="true"
+                                    ></span>
+                                    Sending...
+                                    </>
+                                ) : (
+                                    "Send Message"
+                                )}
+                                </button>
                 </div>
                 </div>
             </div>

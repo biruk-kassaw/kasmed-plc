@@ -170,7 +170,6 @@ h6 {
 }
 
 .php-email-form .sent-message {
-  display: none;
   color: #ffffff;
   background: #059652;
   text-align: center;
@@ -549,7 +548,7 @@ h6 {
 
   .navmenu .dropdown ul {
     position: static;
-    display: none;
+    /* display: none; */
     z-index: 99;
     padding: 10px 0;
     margin: 10px 20px;
@@ -1675,9 +1674,9 @@ section,
   height: 100%;
 }
 
-.contact .php-email-form input[type=text],
-.contact .php-email-form input[type=email],
-.contact .php-email-form textarea {
+ .php-email-form input[type=text],
+ .php-email-form input[type=email],
+ .php-email-form textarea {
   font-size: 14px;
   padding: 10px 15px;
   box-shadow: none;

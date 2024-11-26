@@ -11,7 +11,7 @@ export default function Footer() {
                   <p>Kality Selam Tower</p>
                   <p>Addis Ababa, Ethiopia</p>
                   <p className="mt-3">
-                    <strong>Phone:</strong> <span>+251991188086</span>
+                    <strong>Phone:</strong> <span>+251991188086, +251954085010</span>
                   </p>
                   <p>
                     <strong>Email:</strong> <span>kasmedtradingplc1@gmail.com</span>

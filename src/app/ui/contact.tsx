@@ -14,9 +14,9 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const { name, value } = e.target;
-    // setFormData((prevData) => ({ ...prevData, [name]: value }));
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
     validateForm();
   };
 
@@ -34,23 +34,27 @@ export default function Contact() {
     e.preventDefault();
     if (!isFormValid) return;
     setIsSubmitting(true);
-    // // try {
-    // const form = document.getElementById("form") as HTMLFormElement;
-    //     emailjs.init('gnbvlXsfVM2WV9fHF')
-    //     emailjs.sendForm("service_s0wtt7h","template_2ycj25l", form).then((response) => {
-    //         console.log("Email sent successfully!", response.status, response.text);
-    //         alert("Your message has been sent. Thank you!");
-    //       })
-    //       .catch((err) => {
-    //         console.error("Error sending email:", err);
-    //         alert("There was an error sending your message. Please try again later.");
-    //       });
-    //   setMessage("Your message has been sent. Thank you!");
-    // } catch (error) {
-    //     console.log("error", formData)
-    //   setMessage("There was an error sending your message. Please try again.");
-    // }
-    setIsSubmitting(false);
+    try {
+      const form = document.getElementById("form") as HTMLFormElement;
+      emailjs.init('PkltkyiZua82kAfKA')
+
+      emailjs.sendForm("service_86wbd8e","template_xtwc4ab", form).then((response) => {
+          setIsSubmitting(false);
+          setMessage("We have received your message. Thank you!");
+          setFormData({
+            name: "",
+            email: "",
+            subject: "",
+            message: "",
+          })
+        })
+        .catch((err) => {
+          setIsSubmitting(false);
+          alert("There was an error sending your message. Please check your internet connection and try again later.");
+        });
+    } catch (error) {
+      alert("There was an error sending your message. Please check your internet connection and try again later.");
+    }
   };
 
   return (
@@ -81,7 +85,7 @@ export default function Contact() {
               <i className="bi bi-telephone flex-shrink-0" />
               <div>
                 <h3>Call Us</h3>
-                <p>+251991188086</p>
+                <p>+251991188086, +251954085010</p>
               </div>
             </div>
             <div className="info-item d-flex" data-aos="fade-up" data-aos-delay={500}>
@@ -141,21 +145,32 @@ export default function Contact() {
                     rows={6}
                     placeholder="Message"
                     value={formData.message}
-                    // onChange={handleInputChange}
+                    onChange={handleInputChange}
                     required
                   />
                 </div>
                 <div className="col-md-12 text-center">
-                  {isSubmitting ? (
-                    <div className="loading">Sending...</div>
-                  ) : (
                     <>
-                      {message && <div className="error-message">{message}</div>}
-                      <button type="submit" disabled={!isFormValid}>
-                        Send Message
-                      </button>
+                      {message && <div className="sent-message">{message}</div>}
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        disabled={!isFormValid || isSubmitting} // Disable during form submission
+                      >
+                      {isSubmitting ? (
+                        <>
+                          <span
+                            className="spinner-border spinner-border-sm me-2"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                          Sending...
+                        </>
+                      ) : (
+                        "Send Message"
+                      )}
+                    </button>
                     </>
-                  )}
                 </div>
               </div>
             </form>

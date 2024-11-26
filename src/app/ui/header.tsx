@@ -7,7 +7,31 @@ import logo from "../public/images/logo.jpg"
 export default function Header() {
   const pathname = usePathname();
   const [activeHash, setActiveHash] = useState("");
+  const [isMobileNavActive, setIsMobileNavActive] = useState(false);
 
+  const toggleMobileNav = () => {
+    setIsMobileNavActive((prev) => {
+      const newState = !prev;
+      if (newState) {
+        document.body.classList.add("mobile-nav-active");
+      } else {
+        document.body.classList.remove("mobile-nav-active");
+      }
+      return newState;
+    });
+  };
+  
+
+  const handleNavLinkClick = () => {
+    console.log(isMobileNavActive)
+    if (isMobileNavActive) {
+      setIsMobileNavActive((prevState) => {
+        const newState = !prevState;
+        console.log("Updated state:", newState);
+        return newState;
+      });
+    }
+  };
   useEffect(() => {
     const initialHash = window.location.hash;
     setActiveHash(initialHash || "#hero");  
@@ -60,7 +84,7 @@ export default function Header() {
               </a>
             </i>
             <i className="bi bi-phone d-flex align-items-center ms-4">
-              <span>+251991188086</span>
+              <span>+251991188086, +251954085010</span>
             </i>
           </div>
           <div className="social-links d-none d-md-flex align-items-center">
@@ -83,16 +107,19 @@ export default function Header() {
       <div className="branding d-flex align-items-center">
         <div className="container position-relative d-flex align-items-center justify-content-between">
           <Link href="/home" className="logo d-flex align-items-center me-auto">
-            <Image alt="logo" src={logo} width={50} height={50}/>
+            <Image alt="logo" src={logo} width={50} height={50} />
             <h1 className="sitename">Kasmed</h1>
           </Link>
-          <nav id="navmenu" className="navmenu">
+          <nav
+            id="navmenu"
+            className={`navmenu ${isMobileNavActive ? "mobile-nav-active" : ""}`}
+          >
             <ul>
               <li>
                 <a
                   href="/home#hero"
                   className={isActive("/home#hero") ? "active" : ""}
-                  onClick={() => handleClick("/home#hero")}
+                  onClick={handleNavLinkClick}
                 >
                   Home
                 </a>
@@ -101,7 +128,7 @@ export default function Header() {
                 <Link
                   href="/home#about"
                   className={isActive("/home#about") ? "active" : ""}
-                  onClick={() => handleClick("/home#about")}
+                  onClick={handleNavLinkClick}
                 >
                   About
                 </Link>
@@ -110,7 +137,7 @@ export default function Header() {
                 <a
                   href="/home#services"
                   className={isActive("/home#services") ? "active" : ""}
-                  onClick={() => handleClick("/home#services")}
+                  onClick={handleNavLinkClick}
                 >
                   Services
                 </a>
@@ -119,18 +146,20 @@ export default function Header() {
                 <a
                   href="/home#departments"
                   className={isActive("/home#departments") ? "active" : ""}
-                  onClick={() => handleClick("/home#departments")}
+                  onClick={handleNavLinkClick}
                 >
                   Products
                 </a>
               </li>
             </ul>
-            <i className="mobile-nav-toggle d-xl-none bi bi-list" />
+            <i
+              className={`mobile-nav-toggle d-xl-none bi ${
+                isMobileNavActive ? "bi-x" : "bi-list"
+              }`}
+              onClick={toggleMobileNav}
+            />
           </nav>
-          <a
-            href="/home#contact"
-            className={"cta-btn d-none d-sm-block"}
-          >
+          <a href="/home#contact" className={"cta-btn d-none d-sm-block"}>
             Contact Us
           </a>
         </div>
